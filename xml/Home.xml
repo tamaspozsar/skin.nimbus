@@ -1137,7 +1137,8 @@
 						</content>
 					</control>
 					<control type="group">
-						<left>65</left>
+						<!-- 343px button strip centered in the 440px Jellyfin sidebar. -->
+						<left>49</left>
 						<top>70</top>
 						<width>343</width>
 						<height>140</height>
@@ -1192,23 +1193,27 @@
 						</control>
 					</control>
 					<control type="group">
+						<!-- Equal 90px left/right margins within the 440px Jellyfin sidebar. -->
 						<top>90</top>
 						<left>90</left>
-						<width>380</width>
+						<width>260</width>
 						<control type="label">
 							<top>787</top>
+							<width>260</width>
 							<font>font36_title</font>
 							<label>[LIGHT]$INFO[System.Time][/LIGHT]</label>
 							<textcolor>unfocused_text</textcolor>
 						</control>
 						<control type="label">
 							<top>830</top>
+							<width>260</width>
 							<font>font27</font>
 							<label>$VAR[HomeMenuWeatherVar]</label>
 							<textcolor>darkgrey</textcolor>
 						</control>
 						<control type="label">
 							<top>865</top>
+							<width>260</width>
 							<font>font27</font>
 							<label>$INFO[System.Date(MMM d)], $INFO[System.Date(yyyy)]</label>
 							<textcolor>darkgrey</textcolor>
