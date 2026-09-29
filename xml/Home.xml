@@ -1047,9 +1047,9 @@
             </include>
 						<content>
 							<!-- MOVIES 19000 -->
-							<include content="MoviesMainMenu" condition="!Skin.HasSetting(HomeMenuNoMoviesButton)" />
+							<include content="MoviesMainMenu" condition="!Skin.HasSetting(HomeMenuNoMoviesButton) | Skin.HasSetting(JellyfinMinimalHome)" />
 							<!-- TVSHOWS 22000 -->
-							<include content="TVShowsMainMenu" condition="!Skin.HasSetting(HomeMenuNoTVShowsButton)" />
+							<include content="TVShowsMainMenu" condition="!Skin.HasSetting(HomeMenuNoTVShowsButton) | Skin.HasSetting(JellyfinMinimalHome)" />
 							<!-- CUSTOM 1 23000 -->
 							<include content="Custom1MainMenu" condition="!Skin.HasSetting(HomeMenuNoCustom1Button)" />
 							<!-- CUSTOM 2 24000 -->
