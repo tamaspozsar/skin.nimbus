@@ -1060,7 +1060,7 @@
 								<onclick>PlayDisc</onclick>
 								<property name="menu_id">$NUMBER[21000]</property>
 								<property name="id">disc</property>
-								<visible>System.HasMediaDVD</visible>
+								<visible>System.HasMediaDVD + !Skin.HasSetting(JellyfinMinimalHome)</visible>
 							</item>
 							<item>
 								<label>$LOCALIZE[20389]</label>
