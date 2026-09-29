@@ -89,13 +89,13 @@ jobs:
           text = path.read_text(encoding="utf-8")
 
           old = "    if property_version == installed_version:\n        return\n    from modules.cpath_maker import remake_all_cpaths\n"
-          new = "    if property_version == installed_version:\n        return\n    # Nimbus Jellyfin ships static menus/widgets; do not overwrite them after a skin update.\n    if xbmc.getCondVisibility(\\"Skin.HasSetting(JellyfinMinimalHome)\\"):\n        return set_installed_version(skin_id, installed_version)\n    from modules.cpath_maker import remake_all_cpaths\n"
+          new = '    if property_version == installed_version:\n        return\n    # Nimbus Jellyfin ships static menus/widgets; do not overwrite them after a skin update.\n    if xbmc.getCondVisibility("Skin.HasSetting(JellyfinMinimalHome)"):\n        return set_installed_version(skin_id, installed_version)\n    from modules.cpath_maker import remake_all_cpaths\n'
           if old not in text:
               raise SystemExit("check_for_update patch anchor not found")
           text = text.replace(old, new, 1)
 
           old = "    if saved_profile == current_profile:\n        return\n    from modules.cpath_maker import remake_all_cpaths\n"
-          new = "    if saved_profile == current_profile:\n        return\n    # Preserve the static Jellyfin preset across Kodi profile switches too.\n    if xbmc.getCondVisibility(\\"Skin.HasSetting(JellyfinMinimalHome)\\"):\n        return set_current_profile(skin_id, current_profile)\n    from modules.cpath_maker import remake_all_cpaths\n"
+          new = '    if saved_profile == current_profile:\n        return\n    # Preserve the static Jellyfin preset across Kodi profile switches too.\n    if xbmc.getCondVisibility("Skin.HasSetting(JellyfinMinimalHome)"):\n        return set_current_profile(skin_id, current_profile)\n    from modules.cpath_maker import remake_all_cpaths\n'
           if old not in text:
               raise SystemExit("check_for_profile_change patch anchor not found")
           text = text.replace(old, new, 1)
