@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.nimbus" version="0.1.43" name="Nimbus"
-	provider-name="Ivar Brandt">
+<addon id="skin.nimbus" version="0.1.43.1" name="Nimbus Jellyfin"
+	provider-name="Ivar Brandt; Jellyfin fork maintained by Tamás Pozsár">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0" />
 		<import addon="script.nimbus.helper" version="0.0.50"/>
@@ -22,11 +22,11 @@
 			<icon>resources/icon.png</icon>
 			<fanart>resources/fanart.png</fanart>
 		</assets>
-		<summary lang="en_GB">Nimbus skin by Ivar Brandt</summary>
-		<summary lang="en_NZ">Nimbus skin by Ivar Brandt</summary>
-		<summary lang="en_US">Nimbus skin by Ivar Brandt</summary>
-		<description lang="en_GB">Nimbus Skin</description>
-		<description lang="en_NZ">Nimbus Skin</description>
-		<description lang="en_US">Nimbus Skin</description>
+		<summary lang="en_GB">Nimbus optimized for a Jellyfin-backed TV library</summary>
+		<summary lang="en_NZ">Nimbus optimized for a Jellyfin-backed TV library</summary>
+		<summary lang="en_US">Nimbus optimized for a Jellyfin-backed TV library</summary>
+		<description lang="en_GB">A focused Nimbus fork for Kodi + Jellyfin for Kodi, targeting simple remote-control navigation and a clean movie/TV browsing experience. Based on Nimbus by Ivar Brandt.</description>
+		<description lang="en_NZ">A focused Nimbus fork for Kodi + Jellyfin for Kodi, targeting simple remote-control navigation and a clean movie/TV browsing experience. Based on Nimbus by Ivar Brandt.</description>
+		<description lang="en_US">A focused Nimbus fork for Kodi + Jellyfin for Kodi, targeting simple remote-control navigation and a clean movie/TV browsing experience. Based on Nimbus by Ivar Brandt.</description>
 	</extension>
 </addon>
