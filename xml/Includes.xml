@@ -1712,7 +1712,7 @@
     <param name="height">1160</param>
     <param name="flipx">false</param>
     <definition>
-			<!-- Content Panel Background -->
+			<!-- Standard Nimbus panel -->
 			<control type="image">
 				<texture flipx="$PARAM[flipx]" colordiffuse="$VAR[MainMenuDiffuse]">colors/white.png</texture>
 				<bordersize>40</bordersize>
@@ -1721,6 +1721,18 @@
 				<right>$PARAM[right]</right>
 				<top>$PARAM[top]</top>
 				<height>$PARAM[height]</height>
+				<visible>!Skin.HasSetting(JellyfinMinimalHome)</visible>
+			</control>
+			<!-- Jellyfin fork: dark navy panel that fades into the fanart. -->
+			<control type="image">
+				<texture flipx="$PARAM[flipx]" colordiffuse="jellyfin_panel">lists/contentpanel-fade.png</texture>
+				<bordersize>20</bordersize>
+				<width>$PARAM[width]</width>
+				<left>$PARAM[left]</left>
+				<right>$PARAM[right]</right>
+				<top>$PARAM[top]</top>
+				<height>$PARAM[height]</height>
+				<visible>Skin.HasSetting(JellyfinMinimalHome)</visible>
 			</control>
     </definition>
 	</include>
