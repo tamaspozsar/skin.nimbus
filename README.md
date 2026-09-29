@@ -1,12 +1,37 @@
-# Nimbus Skin for Kodi Omega
+# Nimbus Jellyfin
 
-Kodi File Manager Source: [https://ivarbrandt.github.io/repository.ivarbrandt/](https://ivarbrandt.github.io/repository.ivarbrandt/)
+A focused fork of [Nimbus](https://github.com/ivarbrandt/skin.nimbus) for **Kodi + Jellyfin for Kodi** on a TV / Android TV box.
 
-If you encounter any issues while using Nimbus, please follow these guidelines before opening an Issue:
+The goal is deliberately narrow:
 
-- Read the **CHANGELOG**. As new updates get released features are added, changed, modified or removed. *Before opening an Issue* related to this make sure you read the changelog (located at the bottom of Skin settings in Extras) as it will contain information for all the changes made to each update. It is also a good way to stay current with what is new with the skin.
-- Error related Issues **MUST** include a log file. Your Issue will be closed immediately if you fail to include a log file.
-- Make sure to check all open Issues to see if your problem is being addressed already.
-- Only **one** issue/feature request per user at a time. If I see multiple issues opened by the same user, all but the first issue they opened will be closed.
-- **DO NOT** hijack an open Issue with unrelated problems. Open a new Issue.
-- Do your best to **monitor** the Issue you have opened. If I need additional information and it is not supplied within 7 days, I will close the Issue. 
+- straightforward remote-control navigation;
+- direct access to Movies and TV Shows synchronized by Jellyfin for Kodi;
+- clear poster browsing;
+- prominent title, plot, ratings and runtime;
+- Continue Watching and Recently Added widgets;
+- minimal home-screen clutter.
+
+## Status
+
+This fork is currently being bootstrapped from upstream Nimbus `0.1.43`.
+
+The add-on ID intentionally remains **`skin.nimbus`** so existing Nimbus helper integration continues to work. The display name is **Nimbus Jellyfin**.
+
+See [JELLYFIN.md](JELLYFIN.md) for the intended Kodi/Jellyfin setup.
+
+## Development plan
+
+1. Reproducible installable ZIP build.
+2. Jellyfin-oriented home-screen preset.
+3. Movie and TV browsing defaults optimized for a D-pad remote.
+4. TV testing on Kodi Omega.
+5. Optional self-hosted Kodi repository for one-URL installation and updates.
+
+## Upstream and license
+
+Original Nimbus by **Ivar Brandt**:
+https://github.com/ivarbrandt/skin.nimbus
+
+Nimbus code is licensed under **GPL-2.0**. Nimbus artwork is licensed under **CC BY-SA 4.0**. See [LICENSE.txt](LICENSE.txt).
+
+This fork is not affiliated with the Jellyfin project.
