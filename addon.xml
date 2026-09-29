@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.nimbus" version="0.1.44.0" name="Nimbus Jellyfin"
+<addon id="skin.nimbus" version="0.1.44.1" name="Nimbus Jellyfin"
 	provider-name="Ivar Brandt; Jellyfin fork maintained by Tamás Pozsár">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0" />
