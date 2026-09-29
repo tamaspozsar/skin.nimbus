@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+  <include name="TVShowsMainMenu">
+    <item>
+      <label>$LOCALIZE[20343]</label>
+      <onclick>ActivateWindow(Videos,videodb://tvshows/titles/,return)</onclick>
+      <property name="menu_id">$NUMBER[22000]</property>
+      <property name="id">tvshows</property>
+      <visible>!Skin.HasSetting(HomeMenuNoTVShowsButton)</visible>
+    </item>
+  </include>
+</includes>
