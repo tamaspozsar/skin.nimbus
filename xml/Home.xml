@@ -1013,12 +1013,15 @@
 					<include>OpenClose_Left</include>
 					<include content="MenuContentPanel">
 						<param name="width" value="620"/>
+						<param name="jellyfin_solid_width" value="360"/>
 					</include>
+					<!-- Gold accent belongs to the menu itself, not the widget canvas.
+					     Keep it short so it cannot cut through poster rows. -->
 					<control type="image">
 						<left>548</left>
-						<top>80</top>
+						<top>205</top>
 						<width>3</width>
-						<height>900</height>
+						<height>150</height>
 						<texture colordiffuse="jellyfin_gold_soft">colors/white.png</texture>
 						<visible>Skin.HasSetting(JellyfinMinimalHome)</visible>
 					</control>
