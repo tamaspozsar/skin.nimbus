@@ -1,0 +1,89 @@
+name: Package Kodi add-ons
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'jellyfin/**'
+    paths:
+      - 'addon.xml'
+      - 'xml/**'
+      - 'resources/**'
+      - 'media/**'
+      - 'colors/**'
+      - 'extras/**'
+      - 'fonts/**'
+      - 'language/**'
+      - 'playlists/**'
+      - 'scripts/**'
+      - 'themes/**'
+      - '.github/workflows/package.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Nimbus Jellyfin
+        uses: actions/checkout@v4
+
+      - name: Read skin metadata
+        id: skin
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import xml.etree.ElementTree as ET
+          root = ET.parse("addon.xml").getroot()
+          print(f"id={root.attrib['id']}")
+          print(f"version={root.attrib['version']}")
+          PY
+
+      - name: Build skin ZIP
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p build/skin.nimbus
+          rsync -a ./ build/skin.nimbus/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'build'
+          cd build
+          zip -qr "skin.nimbus-${{ steps.skin.outputs.version }}.zip" skin.nimbus
+
+      - name: Checkout upstream Nimbus helper
+        uses: actions/checkout@v4
+        with:
+          repository: ivarbrandt/script.nimbus.helper
+          path: helper
+
+      - name: Read helper metadata
+        id: helper
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import xml.etree.ElementTree as ET
+          root = ET.parse("helper/addon.xml").getroot()
+          print(f"id={root.attrib['id']}")
+          print(f"version={root.attrib['version']}")
+          PY
+
+      - name: Build helper ZIP
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p build/script.nimbus.helper
+          rsync -a helper/ build/script.nimbus.helper/ --exclude '.git'
+          cd build
+          zip -qr "script.nimbus.helper-${{ steps.helper.outputs.version }}.zip" script.nimbus.helper
+
+      - name: Upload test packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nimbus-jellyfin-kodi-packages
+          path: |
+            build/skin.nimbus-${{ steps.skin.outputs.version }}.zip
+            build/script.nimbus.helper-${{ steps.helper.outputs.version }}.zip
+          if-no-files-found: error
