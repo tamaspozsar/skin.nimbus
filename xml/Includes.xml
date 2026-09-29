@@ -1711,6 +1711,7 @@
     <param name="top">-40</param>
     <param name="height">1160</param>
     <param name="flipx">false</param>
+    <param name="jellyfin_solid_width">340</param>
     <definition>
 			<!-- Standard Nimbus panel -->
 			<control type="image">
@@ -1723,7 +1724,17 @@
 				<height>$PARAM[height]</height>
 				<visible>!Skin.HasSetting(JellyfinMinimalHome)</visible>
 			</control>
-			<!-- Jellyfin fork: dark navy panel that fades into the fanart. -->
+			<!-- Jellyfin fork: a definite navy sidebar plus a soft fade into the fanart.
+			     The solid layer keeps the blue visible on dark artwork; the fade layer
+			     provides the transition instead of leaving the left side effectively black. -->
+			<control type="image">
+				<texture colordiffuse="jellyfin_panel">colors/white.png</texture>
+				<width>$PARAM[jellyfin_solid_width]</width>
+				<left>$PARAM[left]</left>
+				<top>$PARAM[top]</top>
+				<height>$PARAM[height]</height>
+				<visible>Skin.HasSetting(JellyfinMinimalHome)</visible>
+			</control>
 			<control type="image">
 				<texture flipx="$PARAM[flipx]" colordiffuse="jellyfin_panel">lists/contentpanel-fade.png</texture>
 				<bordersize>20</bordersize>
