@@ -6,7 +6,7 @@
       <onclick>ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
       <property name="menu_id">$NUMBER[19000]</property>
       <property name="id">movies</property>
-      <visible>!Skin.HasSetting(HomeMenuNoMoviesButton)</visible>
+      <visible>!Skin.HasSetting(HomeMenuNoMoviesButton) | Skin.HasSetting(JellyfinMinimalHome)</visible>
     </item>
   </include>
 </includes>
