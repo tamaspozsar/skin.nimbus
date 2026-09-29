@@ -296,6 +296,7 @@
 	</variable>
 
 	<variable name="MenuSelectorColor">
+    <value condition="Skin.HasSetting(JellyfinMinimalHome)">jellyfin_cyan</value>
     <value condition="Player.HasVideo + String.IsEqual(Skin.String(MenuSelectorColorThemeSetting),1)">unfocused_text</value>
     <value condition="String.IsEqual(Skin.String(MenuSelectorColorThemeSetting),1)">unfocused_text</value>
     <value condition="String.IsEqual(Skin.String(MenuSelectorColorThemeSetting),0) + !Skin.HasSetting(Enable.BackgroundBlur)">button_focus</value>
@@ -304,6 +305,7 @@
 	</variable>
 
 	<variable name="FocusColorTheme">
+    <value condition="Skin.HasSetting(JellyfinMinimalHome)">jellyfin_cyan</value>
     <value condition="Player.HasVideo + String.IsEqual(Skin.String(FocusColorThemeSetting),1)">unfocused_text</value>
     <value condition="String.IsEqual(Skin.String(FocusColorThemeSetting),1)">unfocused_text</value>
     <value condition="String.IsEqual(Skin.String(FocusColorThemeSetting),0) + !Skin.HasSetting(Enable.BackgroundBlur)">button_focus</value>
@@ -359,6 +361,7 @@
 	</variable>
 
 	<variable name="MainMenuDiffuse">
+    <value condition="Skin.HasSetting(JellyfinMinimalHome)">jellyfin_panel</value>
     <value condition="Player.HasVideo">80000000</value>
     <value condition="!Skin.HasSetting(Enable.BackgroundBlur) + String.IsEqual(Skin.String(HomeArtworkChoice),1)">80050505</value>
     <value condition="!Skin.HasSetting(Enable.BackgroundBlur) + String.IsEqual(Skin.String(HomeArtworkChoice),0)">FF101010</value>
@@ -373,6 +376,7 @@
 	</variable>
 
 	<variable name="BorderColorVar">
+		<value condition="Skin.HasSetting(JellyfinMinimalHome)">jellyfin_gold_soft</value>
 		<!-- <value condition="Player.HasVideo">FF2E2E2E</value>
 		<value condition="!Skin.HasSetting(Enable.BackgroundBlur)">FF2E2E2E</value> -->
 		<value>FF2E2E2E</value>
