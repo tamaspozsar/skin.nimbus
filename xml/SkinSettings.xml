@@ -19,6 +19,12 @@
 				<pagecontrol>60</pagecontrol>
 				<ondown>610</ondown>
 				<visible>Container(9000).HasFocus(1)</visible>
+				<control type="radiobutton" id="6239">
+					<label>Jellyfin minimal home</label>
+					<include>DefaultSettingButton</include>
+					<selected>Skin.HasSetting(JellyfinMinimalHome)</selected>
+					<onclick>Skin.ToggleSetting(JellyfinMinimalHome)</onclick>
+				</control>
 				<control type="button" id="624">
 					<label>Remake menus and widgets</label>
 					<include>DefaultSettingButton</include>
