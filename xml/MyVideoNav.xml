@@ -4,6 +4,12 @@
 	<backgroundcolor>background</backgroundcolor>
 	<views>50,51,52,54,55,56,500,501</views>
 	<menucontrol>9000</menucontrol>
+	<!-- Jellyfin TV preset: use the Flix poster-strip view for movies and TV shows.
+	     The normal Nimbus "Unlock view" action resets Skin.ForcedView.* and restores user choice. -->
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome) + Container.Content(movies) + String.IsEmpty(Skin.String(Skin.ForcedView.movies))">Skin.SetString(Skin.ForcedView.movies,$LOCALIZE[31101])</onload>
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome) + Container.Content(tvshows) + String.IsEmpty(Skin.String(Skin.ForcedView.tvshows))">Skin.SetString(Skin.ForcedView.tvshows,$LOCALIZE[31101])</onload>
+	<onload condition="String.IsEqual(Skin.String(Skin.ForcedView.movies),$LOCALIZE[31101]) + Container.Content(movies)">Container.SetViewMode(54)</onload>
+	<onload condition="String.IsEqual(Skin.String(Skin.ForcedView.tvshows),$LOCALIZE[31101]) + Container.Content(tvshows)">Container.SetViewMode(54)</onload>
 	<!-- <onunload condition="!String.IsEmpty(Skin.String(TrailerPlaying))">Skin.Reset(TrailerPlaying)</onunload> -->
 	<controls>
 		<include>DefaultBackground</include>
