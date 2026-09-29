@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol>9000</defaultcontrol>
+	<!-- Jellyfin TV preset: start on the first useful movie row so artwork/metadata
+	     is populated immediately instead of leaving the hero area empty. -->
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome)">SetFocus(19012,0,absolute)</onload>
 	<backgroundcolor>background</backgroundcolor>
 	<include>NimbusSkinStringsInitialization</include>
 	<controls>
@@ -1012,19 +1015,9 @@
 					</animation>
 					<include>OpenClose_Left</include>
 					<include content="MenuContentPanel">
-						<param name="width" value="620"/>
-						<param name="jellyfin_solid_width" value="360"/>
+						<param name="width" value="650"/>
+						<param name="jellyfin_solid_width" value="440"/>
 					</include>
-					<!-- Gold accent belongs to the menu itself, not the widget canvas.
-					     Keep it short so it cannot cut through poster rows. -->
-					<control type="image">
-						<left>548</left>
-						<top>205</top>
-						<width>3</width>
-						<height>150</height>
-						<texture colordiffuse="jellyfin_gold_soft">colors/white.png</texture>
-						<visible>Skin.HasSetting(JellyfinMinimalHome)</visible>
-					</control>
 					<!-- <visible>true</visible> -->
 					<control type="fixedlist" id="9000">
 						<left>25</left>
