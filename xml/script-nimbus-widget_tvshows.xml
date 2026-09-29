@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+  <include name="TVShowWidgets">
+    <include content="WidgetListLandscape">
+      <param name="content_path" value="special://skin/playlists/inprogress_episodes.xsp"/>
+      <param name="widget_header" value="Continue Watching"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22011"/>
+    </include>
+    <include content="WidgetListLandscape">
+      <param name="content_path" value="special://skin/playlists/recent_unwatched_episodes.xsp"/>
+      <param name="widget_header" value="Recently Added Episodes"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22012"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="videodb://tvshows/titles/"/>
+      <param name="widget_header" value="Browse TV Shows"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22013"/>
+    </include>
+  </include>
+</includes>
