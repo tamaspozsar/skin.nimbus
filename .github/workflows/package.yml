@@ -41,6 +41,25 @@ jobs:
           print(f"version={root.attrib['version']}")
           PY
 
+      - name: Validate skin XML
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          errors = []
+          for path in Path(".").rglob("*.xml"):
+              if ".git" in path.parts or "build" in path.parts:
+                  continue
+              try:
+                  ET.parse(path)
+              except Exception as exc:
+                  errors.append(f"{path}: {exc}")
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print("All skin XML files parsed successfully.")
+          PY
+
       - name: Build skin ZIP
         shell: bash
         run: |

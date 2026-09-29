@@ -4,6 +4,15 @@
 	<backgroundcolor>background</backgroundcolor>
 	<views>50,51,52,54,55,56,500,501</views>
 	<menucontrol>9000</menucontrol>
+	<!-- Jellyfin TV preset: seed Flix once per content type.
+	     Separate initialization markers distinguish "never initialized" from an explicit
+	     user reset of Skin.ForcedView.*, so Unlock/Reset remains persistent. -->
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome) + Container.Content(movies) + !Skin.HasSetting(JellyfinDefaultViewInitializedMovies)">Skin.SetString(Skin.ForcedView.movies,$LOCALIZE[31101])</onload>
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome) + Container.Content(movies) + !Skin.HasSetting(JellyfinDefaultViewInitializedMovies)">Skin.SetBool(JellyfinDefaultViewInitializedMovies)</onload>
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome) + Container.Content(tvshows) + !Skin.HasSetting(JellyfinDefaultViewInitializedTVShows)">Skin.SetString(Skin.ForcedView.tvshows,$LOCALIZE[31101])</onload>
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome) + Container.Content(tvshows) + !Skin.HasSetting(JellyfinDefaultViewInitializedTVShows)">Skin.SetBool(JellyfinDefaultViewInitializedTVShows)</onload>
+	<onload condition="String.IsEqual(Skin.String(Skin.ForcedView.movies),$LOCALIZE[31101]) + Container.Content(movies)">Container.SetViewMode(54)</onload>
+	<onload condition="String.IsEqual(Skin.String(Skin.ForcedView.tvshows),$LOCALIZE[31101]) + Container.Content(tvshows)">Container.SetViewMode(54)</onload>
 	<!-- <onunload condition="!String.IsEmpty(Skin.String(TrailerPlaying))">Skin.Reset(TrailerPlaying)</onunload> -->
 	<controls>
 		<include>DefaultBackground</include>

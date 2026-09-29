@@ -1012,8 +1012,16 @@
 					</animation>
 					<include>OpenClose_Left</include>
 					<include content="MenuContentPanel">
-						<param name="width" value="549"/>
+						<param name="width" value="620"/>
 					</include>
+					<control type="image">
+						<left>548</left>
+						<top>80</top>
+						<width>3</width>
+						<height>900</height>
+						<texture colordiffuse="jellyfin_gold_soft">colors/white.png</texture>
+						<visible>Skin.HasSetting(JellyfinMinimalHome)</visible>
+					</control>
 					<!-- <visible>true</visible> -->
 					<control type="fixedlist" id="9000">
 						<left>25</left>
