@@ -14,6 +14,7 @@
 		<param name="visible">true</param>
 		<param name="item_treshold">0</param>
 		<param name="label_focus">$VAR[FlixCrumbsVar]</param>
+		<param name="sublabel"></param>
 		<definition>
 			<control type="group" id="$PARAM[list_id]665">
 				<include content="WidgetVisibilityAnimations">
@@ -21,7 +22,7 @@
 				</include>
 				<left>50</left>
 				<top>80</top>
-				<height>40</height>
+				<height>68</height>
 				<width>1815</width>
 				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,$PARAM[item_treshold]) | [Container($PARAM[list_id]).IsUpdating + Integer.IsEqual(Container($PARAM[list_id]).NumItems,0)]</visible>
 				<visible>$PARAM[visible]</visible>
@@ -50,7 +51,7 @@
 					<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 				</control>
 				<control type="label">
-					<top>22</top>
+					<top>14</top>
 					<label>$PARAM[label]</label>
 					<font>font23</font>
 					<textcolor>unfocused_text</textcolor>
@@ -59,7 +60,43 @@
 					<scrollspeed>100</scrollspeed>
 					<visible>!Control.HasFocus($PARAM[list_id])</visible>
 				</control>
+				<control type="label">
+					<top>42</top>
+					<height>24</height>
+					<label>$PARAM[sublabel]</label>
+					<font>font18</font>
+					<textcolor>grey</textcolor>
+					<shadowcolor>text_shadow</shadowcolor>
+					<scroll>true</scroll>
+					<scrollspeed>90</scrollspeed>
+					<visible>!String.IsEmpty($PARAM[sublabel])</visible>
+				</control>
 			</control>
+		</definition>
+	</include>
+
+	<!-- Jellyfin TV preset: explicit row-to-row D-pad navigation. The stock
+	     grouplist boundary handlers bounce through hidden controls, which can
+	     strand focus inside a horizontally scrolling widget after SetFocus()
+	     initializes the home directly on a row. -->
+	<include name="JellyfinWidgetVerticalNavigation">
+		<param name="up1">0</param><param name="up2">0</param><param name="up3">0</param>
+		<param name="up4">0</param><param name="up5">0</param><param name="up6">0</param>
+		<param name="down1">0</param><param name="down2">0</param><param name="down3">0</param>
+		<param name="down4">0</param><param name="down5">0</param><param name="down6">0</param>
+		<definition>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up1]).NumItems,0)">SetFocus($PARAM[up1],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up2]).NumItems,0)">SetFocus($PARAM[up2],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up3]).NumItems,0)">SetFocus($PARAM[up3],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up4]).NumItems,0)">SetFocus($PARAM[up4],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up5]).NumItems,0)">SetFocus($PARAM[up5],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up6]).NumItems,0)">SetFocus($PARAM[up6],0,absolute)</onup>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down1]).NumItems,0)">SetFocus($PARAM[down1],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down2]).NumItems,0)">SetFocus($PARAM[down2],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down3]).NumItems,0)">SetFocus($PARAM[down3],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down4]).NumItems,0)">SetFocus($PARAM[down4],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down5]).NumItems,0)">SetFocus($PARAM[down5],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down6]).NumItems,0)">SetFocus($PARAM[down6],0,absolute)</ondown>
 		</definition>
 	</include>
 
@@ -68,17 +105,40 @@
 		<definition>
 			<include content="CategoryLabel">
 				<param name="label">$PARAM[widget_header]</param>
+				<param name="sublabel">$PARAM[widget_subheader]</param>
 				<param name="list_id" value="$PARAM[list_id]"/>
 			</include>
 			<include content="BusyListSpinner">
 				<param name="list_id" value="$PARAM[list_id]"/>
 				<param name="posy" value="240"/>
 			</include>
+			<control type="group">
+				<top>118</top>
+				<left>50</left>
+				<height>92</height>
+				<width>900</width>
+				<visible>String.IsEqual(Window(Home).Property(JellyfinRecommendationsState),loading) + Integer.IsEqual(Container($PARAM[list_id]).NumItems,0) + !String.IsEmpty($PARAM[empty_label])</visible>
+				<control type="label">
+					<height>54</height>
+					<aligny>center</aligny>
+					<font>font23</font>
+					<textcolor>grey</textcolor>
+					<label>$PARAM[empty_label]</label>
+				</control>
+			</control>
 			<control type="fixedlist" id="$PARAM[list_id]">
 				<top>102</top>
 				<onright>$PARAM[list_id]</onright>
 				<orientation>horizontal</orientation>
 				<movement>7</movement>
+				<include content="JellyfinWidgetVerticalNavigation">
+					<param name="up1" value="$PARAM[jellyfin_up1]"/><param name="up2" value="$PARAM[jellyfin_up2]"/>
+					<param name="up3" value="$PARAM[jellyfin_up3]"/><param name="up4" value="$PARAM[jellyfin_up4]"/>
+					<param name="up5" value="$PARAM[jellyfin_up5]"/><param name="up6" value="$PARAM[jellyfin_up6]"/>
+					<param name="down1" value="$PARAM[jellyfin_down1]"/><param name="down2" value="$PARAM[jellyfin_down2]"/>
+					<param name="down3" value="$PARAM[jellyfin_down3]"/><param name="down4" value="$PARAM[jellyfin_down4]"/>
+					<param name="down5" value="$PARAM[jellyfin_down5]"/><param name="down6" value="$PARAM[jellyfin_down6]"/>
+				</include>
 				<animation condition="Window.IsVisible(1121) + Container($PARAM[list_id]).IsUpdating" reversible="true" pulse="true">
 					<effect type="fade" start="100" end="80" time="700" tween="sine" easing="inout" />
 					<effect type="fadediffuse" start="FFE9E9E9" end="FF777777" time="700" />
@@ -105,6 +165,9 @@
 				<focusedlayout width="230.5" height="393" infoupdate="30">
 					<control type="group">
 						<depth>DepthContentPopout</depth>
+						<animation type="Conditional" condition="Skin.HasSetting(JellyfinMinimalHome)" reversible="true">
+							<effect type="zoom" start="100" end="102" center="148,165" time="160" tween="sine" easing="out" />
+						</animation>
 						<left>33</left>
 						<top>15</top>
 						<include content="FlixWidgetMovieLayout">
@@ -189,6 +252,14 @@
 				<onright>$PARAM[list_id]</onright>
 				<orientation>horizontal</orientation>
 				<movement>3</movement>
+				<include content="JellyfinWidgetVerticalNavigation">
+					<param name="up1" value="$PARAM[jellyfin_up1]"/><param name="up2" value="$PARAM[jellyfin_up2]"/>
+					<param name="up3" value="$PARAM[jellyfin_up3]"/><param name="up4" value="$PARAM[jellyfin_up4]"/>
+					<param name="up5" value="$PARAM[jellyfin_up5]"/><param name="up6" value="$PARAM[jellyfin_up6]"/>
+					<param name="down1" value="$PARAM[jellyfin_down1]"/><param name="down2" value="$PARAM[jellyfin_down2]"/>
+					<param name="down3" value="$PARAM[jellyfin_down3]"/><param name="down4" value="$PARAM[jellyfin_down4]"/>
+					<param name="down5" value="$PARAM[jellyfin_down5]"/><param name="down6" value="$PARAM[jellyfin_down6]"/>
+				</include>
 				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating</visible>
 				<right>0</right>
 				<height>346</height>
@@ -212,6 +283,9 @@
 				<focusedlayout width="459.5" height="393" infoupdate="30">
 					<control type="group">
 						<depth>DepthContentPopout</depth>
+						<animation type="Conditional" condition="Skin.HasSetting(JellyfinMinimalHome)" reversible="true">
+							<effect type="zoom" start="100" end="102" center="265,165" time="160" tween="sine" easing="out" />
+						</animation>
 						<left>35</left>
 						<top>15</top>
 						<include content="FlixScapeWidgetMovieLayout">

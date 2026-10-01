@@ -35,7 +35,7 @@
         <onleft>716</onleft>
         <onright>708</onright>
         <control type="button" id="701">
-          <visible>Player.HasSceneMarkers | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [Player.SeekEnabled + VideoPlayer.Content(livetv)]</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + [Player.HasSceneMarkers | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [Player.SeekEnabled + VideoPlayer.Content(livetv)]]</visible>
           <include>PlayerButton</include>
           <label>&#xf141;</label>
           <onclick>PlayerControl(Previous)</onclick>
@@ -44,7 +44,7 @@
           <include>PlayerButton</include>
           <label>&#xf087;</label>
           <onclick>PlayerControl(Rewind)</onclick>
-          <visible>[Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + [Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
         </control>
         <control type="togglebutton" id="703">
           <include>PlayerButton</include>
@@ -59,17 +59,28 @@
           <label>&#xf1a2;</label>
           <onclick>PlayerControl(Stop)</onclick>
         </control>
+        <control type="label">
+          <top>50</top>
+          <left>-90</left>
+          <width>180</width>
+          <height>36</height>
+          <font>font18</font>
+          <align>center</align>
+          <textcolor>jellyfin_gold_soft</textcolor>
+          <label>Stop &amp; return</label>
+          <visible>Skin.HasSetting(JellyfinMinimalHome) + Control.HasFocus(704)</visible>
+        </control>
         <control type="button" id="705">
           <include>PlayerButton</include>
           <label>&#xf178;</label>
           <onclick>PlayerControl(Forward)</onclick>
-          <visible>[Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + [Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
         </control>
         <control type="button" id="706">
           <include>PlayerButton</include>
           <label>&#xf145;</label>
           <onclick>PlayerControl(Next)</onclick>
-          <visible>Player.HasSceneMarkers | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | PVR.IsTimeShift</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + [Player.HasSceneMarkers | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | PVR.IsTimeShift]</visible>
         </control>
       </control>
       <control type="grouplist" id="707">
@@ -343,14 +354,14 @@
             <param name="texture" value="osd/fullscreen/buttons/previous.png"/>
           </include>
           <onclick>PlayerControl(Previous)</onclick>
-          <visible>Player.HasSceneMarkers | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [Player.SeekEnabled + VideoPlayer.Content(livetv)]</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + [Player.HasSceneMarkers | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [Player.SeekEnabled + VideoPlayer.Content(livetv)]]</visible>
         </control>
         <control type="radiobutton" id="702">
           <include content="OSDButton">
             <param name="texture" value="osd/fullscreen/buttons/rewind.png"/>
           </include>
           <onclick>PlayerControl(Rewind)</onclick>
-          <visible>[Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + [Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
         </control>
         <control type="group" id="703">
           <width>64</width>
@@ -396,19 +407,30 @@
           </include>
           <onclick>PlayerControl(Stop)</onclick>
         </control>
+        <control type="label">
+          <top>-2</top>
+          <left>-68</left>
+          <width>200</width>
+          <height>32</height>
+          <font>font18</font>
+          <align>center</align>
+          <textcolor>jellyfin_gold_soft</textcolor>
+          <label>Stop &amp; return</label>
+          <visible>Skin.HasSetting(JellyfinMinimalHome) + Control.HasFocus(704)</visible>
+        </control>
         <control type="radiobutton" id="705">
           <include content="OSDButton">
             <param name="texture" value="osd/fullscreen/buttons/forward.png"/>
           </include>
           <onclick>PlayerControl(Forward)</onclick>
-          <visible>[Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + [Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
         </control>
         <control type="radiobutton" id="706">
           <include content="OSDButton">
             <param name="texture" value="osd/fullscreen/buttons/next.png"/>
           </include>
           <onclick>PlayerControl(Next)</onclick>
-          <visible>Player.HasSceneMarkers | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | PVR.IsTimeShift</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + [Player.HasSceneMarkers | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | PVR.IsTimeShift]</visible>
         </control>
       </control>
       <control type="grouplist" id="707">

@@ -150,10 +150,10 @@ jobs:
           tree = ET.parse(addon)
           root = tree.getroot()
           version = root.attrib["version"]
-          # .1 was the static-preset patch; .2 introduced movie recommendations.
-          # Use .3 so existing recommendation builds upgrade to TV support too.
+          # .1 preserved the static preset, .2 added movie recommendations,
+          # .3 added TV recommendations. .4 adds dynamic discovery rows.
           if version.count(".") == 2:
-              root.attrib["version"] = version + ".3"
+              root.attrib["version"] = version + ".4"
           tree.write(addon, encoding="UTF-8", xml_declaration=True)
           PY
 

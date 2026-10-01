@@ -25,11 +25,21 @@ BECAUSE_PATH = PLAYLIST_DIR + "nimbus_jellyfin_because.xsp"
 FOR_YOU_PATH = PLAYLIST_DIR + "nimbus_jellyfin_for_you.xsp"
 TV_BECAUSE_PATH = PLAYLIST_DIR + "nimbus_jellyfin_tv_because.xsp"
 TV_FOR_YOU_PATH = PLAYLIST_DIR + "nimbus_jellyfin_tv_for_you.xsp"
+MOVIE_GENRE_PATHS = [
+    PLAYLIST_DIR + "nimbus_jellyfin_movie_genre_{}.xsp".format(index)
+    for index in range(1, 5)
+]
+TV_GENRE_PATHS = [
+    PLAYLIST_DIR + "nimbus_jellyfin_tv_genre_{}.xsp".format(index)
+    for index in range(1, 5)
+]
 
 MAX_LIBRARY_ITEMS = 2000
 MAX_RECOMMENDATIONS = 20
 HISTORY_SIZE = 10
 MIN_REFRESH_SECONDS = 30
+MIN_GENRE_ITEMS = 3
+MAX_GENRE_ROWS = 4
 
 
 def _jsonrpc(method, params=None):
@@ -67,6 +77,67 @@ def _year(movie):
         return int(movie.get("year") or 0)
     except (TypeError, ValueError):
         return 0
+
+
+def _write_genre_playlist(path, name, genre, playlist_type):
+    if not genre:
+        if xbmcvfs.exists(path):
+            xbmcvfs.delete(path)
+        return
+
+    if not xbmcvfs.exists(PLAYLIST_DIR):
+        xbmcvfs.mkdirs(PLAYLIST_DIR)
+
+    root = ET.Element("smartplaylist", {"type": playlist_type})
+    ET.SubElement(root, "name").text = name
+    ET.SubElement(root, "match").text = "all"
+    rule = ET.SubElement(root, "rule", {"field": "genre", "operator": "contains"})
+    ET.SubElement(rule, "value").text = genre
+    ET.SubElement(root, "limit").text = str(MAX_RECOMMENDATIONS)
+    ET.SubElement(root, "order", {"direction": "descending"}).text = "rating"
+
+    payload = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>\n'
+    payload += ET.tostring(root, encoding="unicode")
+    handle = xbmcvfs.File(path, "w")
+    try:
+        handle.write(payload)
+    finally:
+        handle.close()
+
+
+def _select_genres(items, watched):
+    counts = {}
+    preference = {}
+
+    for item in items:
+        for genre in _norm(item.get("genre")):
+            counts[genre] = counts.get(genre, 0) + 1
+
+    for index, item in enumerate(watched[:HISTORY_SIZE]):
+        recency = 1.0 / (1.0 + index * 0.35)
+        for genre in _norm(item.get("genre")):
+            preference[genre] = preference.get(genre, 0.0) + recency
+
+    eligible = [
+        genre for genre, count in counts.items() if count >= MIN_GENRE_ITEMS
+    ]
+    eligible.sort(
+        key=lambda genre: (
+            preference.get(genre, 0.0) * 10.0 + counts.get(genre, 0),
+            counts.get(genre, 0),
+            genre,
+        ),
+        reverse=True,
+    )
+    return eligible[:MAX_GENRE_ROWS]
+
+
+def _display_genre(genre):
+    special = {
+        "science fiction": "Sci-Fi",
+        "sci-fi": "Sci-Fi",
+    }
+    return special.get(genre, genre.title())
 
 
 def _write_path_playlist(path, name, items, playlist_type):
@@ -120,6 +191,7 @@ class RecommendationEngine:
             return
 
         self._last_refresh = now
+        self.home_window.setProperty("JellyfinRecommendationsState", "loading")
         movies = self._movies()
 
         if movies:
@@ -139,10 +211,7 @@ class RecommendationEngine:
                 source_title = (source.get("title") or source.get("label") or "").strip()
                 because = self._because_you_watched(source, unwatched)
                 self.home_window.setProperty(
-                    "JellyfinBecauseYouWatchedLabel",
-                    "Because You Watched: {}".format(source_title)
-                    if source_title
-                    else "Because You Watched",
+                    "JellyfinBecauseYouWatchedSource", source_title
                 )
                 _write_path_playlist(
                     BECAUSE_PATH,
@@ -151,21 +220,21 @@ class RecommendationEngine:
                     "movies",
                 )
             else:
-                self.home_window.setProperty(
-                    "JellyfinBecauseYouWatchedLabel", "Because You Watched"
-                )
+                self.home_window.clearProperty("JellyfinBecauseYouWatchedSource")
                 _write_path_playlist(
                     BECAUSE_PATH, "Because You Watched", [], "movies"
                 )
 
             for_you = self._for_you(watched, unwatched)
             _write_path_playlist(FOR_YOU_PATH, "You Might Like", for_you, "movies")
+            self._refresh_genres(movies, watched, "movies")
         else:
             self._clear_movies()
 
         # TV recommendations are independent from the movie library. A TV-only
         # profile must still build its discovery rows.
         self._refresh_tvshows()
+        self.home_window.setProperty("JellyfinRecommendationsState", "ready")
 
     def _movies(self):
         result = _jsonrpc(
@@ -242,9 +311,7 @@ class RecommendationEngine:
     def _refresh_tvshows(self):
         tvshows = self._tvshows()
         if not tvshows:
-            self.home_window.setProperty(
-                "JellyfinTVBecauseYouWatchedLabel", "Because You Watched"
-            )
+            self.home_window.clearProperty("JellyfinTVBecauseYouWatchedSource")
             _write_path_playlist(TV_BECAUSE_PATH, "Because You Watched", [], "tvshows")
             _write_path_playlist(TV_FOR_YOU_PATH, "You Might Like", [], "tvshows")
             return
@@ -284,10 +351,7 @@ class RecommendationEngine:
             source_title = (source.get("title") or source.get("label") or "").strip()
             because = self._because_you_watched(source, candidates)
             self.home_window.setProperty(
-                "JellyfinTVBecauseYouWatchedLabel",
-                "Because You Watched: {}".format(source_title)
-                if source_title
-                else "Because You Watched",
+                "JellyfinTVBecauseYouWatchedSource", source_title
             )
             _write_path_playlist(
                 TV_BECAUSE_PATH,
@@ -308,6 +372,27 @@ class RecommendationEngine:
         ]
         for_you = self._for_you(watched_shows, candidates)
         _write_path_playlist(TV_FOR_YOU_PATH, "You Might Like", for_you, "tvshows")
+        self._refresh_genres(tvshows, watched_shows, "tvshows")
+
+    def _refresh_genres(self, items, watched, playlist_type):
+        paths = MOVIE_GENRE_PATHS if playlist_type == "movies" else TV_GENRE_PATHS
+        prefix = (
+            "JellyfinMovieGenre"
+            if playlist_type == "movies"
+            else "JellyfinTVGenre"
+        )
+        genres = _select_genres(items, watched)
+
+        for index, path in enumerate(paths, start=1):
+            if index <= len(genres):
+                genre = genres[index - 1]
+                label = _display_genre(genre)
+                self.home_window.setProperty("{}{}Label".format(prefix, index), label)
+                _write_genre_playlist(path, label, genre, playlist_type)
+            else:
+                self.home_window.clearProperty("{}{}Label".format(prefix, index))
+                if xbmcvfs.exists(path):
+                    xbmcvfs.delete(path)
 
     def _because_you_watched(self, source, candidates):
         source_genres = _norm(source.get("genre"))
@@ -382,18 +467,22 @@ class RecommendationEngine:
         return [movie for _, movie in scored[:MAX_RECOMMENDATIONS]]
 
     def _clear_movies(self):
-        self.home_window.setProperty(
-            "JellyfinBecauseYouWatchedLabel", "Because You Watched"
-        )
-        for path in (BECAUSE_PATH, FOR_YOU_PATH):
+        self.home_window.clearProperty("JellyfinBecauseYouWatchedSource")
+        for index in range(1, MAX_GENRE_ROWS + 1):
+            self.home_window.clearProperty(
+                "JellyfinMovieGenre{}Label".format(index)
+            )
+        for path in (BECAUSE_PATH, FOR_YOU_PATH) + tuple(MOVIE_GENRE_PATHS):
             if xbmcvfs.exists(path):
                 xbmcvfs.delete(path)
 
     def _clear(self):
         self._clear_movies()
-        self.home_window.setProperty(
-            "JellyfinTVBecauseYouWatchedLabel", "Because You Watched"
-        )
-        for path in (TV_BECAUSE_PATH, TV_FOR_YOU_PATH):
+        self.home_window.clearProperty("JellyfinTVBecauseYouWatchedSource")
+        for index in range(1, MAX_GENRE_ROWS + 1):
+            self.home_window.clearProperty(
+                "JellyfinTVGenre{}Label".format(index)
+            )
+        for path in (TV_BECAUSE_PATH, TV_FOR_YOU_PATH) + tuple(TV_GENRE_PATHS):
             if xbmcvfs.exists(path):
                 xbmcvfs.delete(path)
