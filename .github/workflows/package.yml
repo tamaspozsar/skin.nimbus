@@ -133,8 +133,12 @@ jobs:
 
           notify_anchor = '        if sender == "xbmc":\n'
           notify_patch = (
-              '        if method in ("VideoLibrary.OnUpdate", "VideoLibrary.OnScanFinished", "VideoLibrary.OnCleanFinished"):\n'
-              "            self.jellyfin_recommendations.refresh()\n\n"
+              '        if method == "VideoLibrary.OnUpdate":\n'
+              "            self.jellyfin_recommendations.refresh()\n"
+              '        elif method in ("VideoLibrary.OnScanFinished", "VideoLibrary.OnCleanFinished"):\n'
+              "            # Completion must win over throttled update bursts so the final\n"
+              "            # library state is always reflected in generated playlists.\n"
+              "            self.jellyfin_recommendations.refresh(force=True)\n\n"
               '        if sender == "xbmc":\n'
           )
           if notify_anchor not in service_text:
