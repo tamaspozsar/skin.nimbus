@@ -14,6 +14,7 @@
 		<param name="visible">true</param>
 		<param name="item_treshold">0</param>
 		<param name="label_focus">$VAR[FlixCrumbsVar]</param>
+		<param name="sublabel"></param>
 		<definition>
 			<control type="group" id="$PARAM[list_id]665">
 				<include content="WidgetVisibilityAnimations">
@@ -21,7 +22,7 @@
 				</include>
 				<left>50</left>
 				<top>80</top>
-				<height>40</height>
+				<height>68</height>
 				<width>1815</width>
 				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,$PARAM[item_treshold]) | [Container($PARAM[list_id]).IsUpdating + Integer.IsEqual(Container($PARAM[list_id]).NumItems,0)]</visible>
 				<visible>$PARAM[visible]</visible>
@@ -50,7 +51,7 @@
 					<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 				</control>
 				<control type="label">
-					<top>22</top>
+					<top>14</top>
 					<label>$PARAM[label]</label>
 					<font>font23</font>
 					<textcolor>unfocused_text</textcolor>
@@ -58,6 +59,17 @@
 					<scroll>true</scroll>
 					<scrollspeed>100</scrollspeed>
 					<visible>!Control.HasFocus($PARAM[list_id])</visible>
+				</control>
+				<control type="label">
+					<top>42</top>
+					<height>24</height>
+					<label>$PARAM[sublabel]</label>
+					<font>font18</font>
+					<textcolor>grey</textcolor>
+					<shadowcolor>text_shadow</shadowcolor>
+					<scroll>true</scroll>
+					<scrollspeed>90</scrollspeed>
+					<visible>!String.IsEmpty($PARAM[sublabel])</visible>
 				</control>
 			</control>
 		</definition>
@@ -68,12 +80,27 @@
 		<definition>
 			<include content="CategoryLabel">
 				<param name="label">$PARAM[widget_header]</param>
+				<param name="sublabel">$PARAM[widget_subheader]</param>
 				<param name="list_id" value="$PARAM[list_id]"/>
 			</include>
 			<include content="BusyListSpinner">
 				<param name="list_id" value="$PARAM[list_id]"/>
 				<param name="posy" value="240"/>
 			</include>
+			<control type="group">
+				<top>118</top>
+				<left>50</left>
+				<height>92</height>
+				<width>900</width>
+				<visible>String.IsEqual(Window(Home).Property(JellyfinRecommendationsState),loading) + Integer.IsEqual(Container($PARAM[list_id]).NumItems,0) + !String.IsEmpty($PARAM[empty_label])</visible>
+				<control type="label">
+					<height>54</height>
+					<aligny>center</aligny>
+					<font>font23</font>
+					<textcolor>grey</textcolor>
+					<label>$PARAM[empty_label]</label>
+				</control>
+			</control>
 			<control type="fixedlist" id="$PARAM[list_id]">
 				<top>102</top>
 				<onright>$PARAM[list_id]</onright>
@@ -104,7 +131,10 @@
 				</itemlayout>
 				<focusedlayout width="230.5" height="393" infoupdate="30">
 					<control type="group">
-						<depth>DepthContentPopout</depth>
+						<depth>DepthContentPopout</depth
+						<animation type="Conditional" condition="Skin.HasSetting(JellyfinMinimalHome)" reversible="true">
+							<effect type="zoom" start="100" end="102" center="148,165" time="160" tween="sine" easing="out" />
+						</animation>>
 						<left>33</left>
 						<top>15</top>
 						<include content="FlixWidgetMovieLayout">
@@ -211,7 +241,10 @@
 				</itemlayout>
 				<focusedlayout width="459.5" height="393" infoupdate="30">
 					<control type="group">
-						<depth>DepthContentPopout</depth>
+						<depth>DepthContentPopout</depth
+						<animation type="Conditional" condition="Skin.HasSetting(JellyfinMinimalHome)" reversible="true">
+							<effect type="zoom" start="100" end="102" center="265,165" time="160" tween="sine" easing="out" />
+						</animation>>
 						<left>35</left>
 						<top>15</top>
 						<include content="FlixScapeWidgetMovieLayout">
