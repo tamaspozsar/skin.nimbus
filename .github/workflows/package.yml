@@ -153,6 +153,13 @@ jobs:
           tree.write(addon, encoding="UTF-8", xml_declaration=True)
           PY
 
+      - name: Validate patched helper Python
+        shell: bash
+        run: |
+          python3 -m py_compile \
+            helper/resources/lib/service.py \
+            helper/resources/lib/modules/jellyfin_recommendations.py
+
       - name: Read helper metadata
         id: helper
         shell: bash
