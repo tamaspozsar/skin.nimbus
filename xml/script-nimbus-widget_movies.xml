@@ -15,37 +15,40 @@
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_because.xsp"/>
-      <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinBecauseYouWatchedLabel)]"/>
-      <param name="widget_target" value="videos"/>
+      <param name="widget_header" value="Because You Watched"/>
+      <param name="widget_subheader" value="$INFO[Window(Home).Property(JellyfinBecauseYouWatchedSource)]"/>
+      <param name="empty_label" value="Finding something you might like…"/>
       <param name="list_id" value="19014"/>
+      <param name="widget_target" value="videos"/>
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_for_you.xsp"/>
       <param name="widget_header" value="You Might Like"/>
+      <param name="empty_label" value="Finding something you might like…"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="19015"/>
     </include>
     <include content="WidgetListPoster">
-      <param name="content_path" value="special://skin/playlists/genre_scifi.xsp"/>
-      <param name="widget_header" value="Sci-Fi"/>
+      <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_movie_genre_1.xsp"/>
+      <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinMovieGenre1Label)]"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="19016"/>
     </include>
     <include content="WidgetListPoster">
-      <param name="content_path" value="special://skin/playlists/genre_action_adventure.xsp"/>
-      <param name="widget_header" value="Action &amp; Adventure"/>
+      <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_movie_genre_2.xsp"/>
+      <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinMovieGenre2Label)]"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="19017"/>
     </include>
     <include content="WidgetListPoster">
-      <param name="content_path" value="special://skin/playlists/genre_comedy.xsp"/>
-      <param name="widget_header" value="Comedy"/>
+      <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_movie_genre_3.xsp"/>
+      <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinMovieGenre3Label)]"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="19018"/>
     </include>
     <include content="WidgetListPoster">
-      <param name="content_path" value="special://skin/playlists/genre_family.xsp"/>
-      <param name="widget_header" value="Family"/>
+      <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_movie_genre_4.xsp"/>
+      <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinMovieGenre4Label)]"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="19019"/>
     </include>
