@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol>9000</defaultcontrol>
+	<!-- Jellyfin TV preset: start on the first useful movie row so artwork/metadata
+	     is populated immediately instead of leaving the hero area empty. -->
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome)">SetFocus(19012,0,absolute)</onload>
 	<backgroundcolor>background</backgroundcolor>
 	<include>NimbusSkinStringsInitialization</include>
 	<controls>
@@ -1012,16 +1015,9 @@
 					</animation>
 					<include>OpenClose_Left</include>
 					<include content="MenuContentPanel">
-						<param name="width" value="620"/>
+						<param name="width" value="740"/>
+						<param name="jellyfin_solid_width" value="530"/>
 					</include>
-					<control type="image">
-						<left>548</left>
-						<top>80</top>
-						<width>3</width>
-						<height>900</height>
-						<texture colordiffuse="jellyfin_gold_soft">colors/white.png</texture>
-						<visible>Skin.HasSetting(JellyfinMinimalHome)</visible>
-					</control>
 					<!-- <visible>true</visible> -->
 					<control type="fixedlist" id="9000">
 						<left>25</left>
@@ -1141,7 +1137,8 @@
 						</content>
 					</control>
 					<control type="group">
-						<left>65</left>
+						<!-- 343px button strip centered in the 530px Jellyfin sidebar. -->
+						<left>94</left>
 						<top>70</top>
 						<width>343</width>
 						<height>140</height>
@@ -1196,23 +1193,28 @@
 						</control>
 					</control>
 					<control type="group">
+						<!-- Keep the original 350px content width and add the 90px right margin
+					     by widening the sidebar instead of shrinking this block. -->
 						<top>90</top>
 						<left>90</left>
-						<width>380</width>
+						<width>350</width>
 						<control type="label">
 							<top>787</top>
+							<width>350</width>
 							<font>font36_title</font>
 							<label>[LIGHT]$INFO[System.Time][/LIGHT]</label>
 							<textcolor>unfocused_text</textcolor>
 						</control>
 						<control type="label">
 							<top>830</top>
+							<width>350</width>
 							<font>font27</font>
 							<label>$VAR[HomeMenuWeatherVar]</label>
 							<textcolor>darkgrey</textcolor>
 						</control>
 						<control type="label">
 							<top>865</top>
+							<width>350</width>
 							<font>font27</font>
 							<label>$INFO[System.Date(MMM d)], $INFO[System.Date(yyyy)]</label>
 							<textcolor>darkgrey</textcolor>
