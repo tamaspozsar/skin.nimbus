@@ -6,20 +6,40 @@
       <param name="widget_header" value="Continue Watching"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22011"/>
+      <param name="jellyfin_up1" value="22011"/>
+      <param name="jellyfin_down1" value="22012"/>
+      <param name="jellyfin_down2" value="22014"/>
+      <param name="jellyfin_down3" value="22015"/>
+      <param name="jellyfin_down4" value="22016"/>
+      <param name="jellyfin_down5" value="22013"/>
     </include>
     <include content="WidgetListLandscape">
       <param name="content_path" value="special://skin/playlists/recent_unwatched_episodes.xsp"/>
       <param name="widget_header" value="Recently Added Episodes"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22012"/>
+      <param name="jellyfin_up1" value="22011"/>
+      <param name="jellyfin_up2" value="22012"/>
+      <param name="jellyfin_down1" value="22014"/>
+      <param name="jellyfin_down2" value="22015"/>
+      <param name="jellyfin_down3" value="22016"/>
+      <param name="jellyfin_down4" value="22017"/>
+      <param name="jellyfin_down5" value="22013"/>
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_tv_because.xsp"/>
       <param name="widget_header" value="Because You Watched"/>
       <param name="widget_subheader" value="$INFO[Window(Home).Property(JellyfinTVBecauseYouWatchedSource)]"/>
       <param name="empty_label" value="Finding something you might like…"/>
-      <param name="list_id" value="22014"/>
       <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22014"/>
+      <param name="jellyfin_up1" value="22012"/>
+      <param name="jellyfin_up2" value="22011"/>
+      <param name="jellyfin_down1" value="22015"/>
+      <param name="jellyfin_down2" value="22016"/>
+      <param name="jellyfin_down3" value="22017"/>
+      <param name="jellyfin_down4" value="22018"/>
+      <param name="jellyfin_down5" value="22013"/>
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_tv_for_you.xsp"/>
@@ -27,36 +47,82 @@
       <param name="empty_label" value="Finding something you might like…"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22015"/>
+      <param name="jellyfin_up1" value="22014"/>
+      <param name="jellyfin_up2" value="22012"/>
+      <param name="jellyfin_up3" value="22011"/>
+      <param name="jellyfin_down1" value="22016"/>
+      <param name="jellyfin_down2" value="22017"/>
+      <param name="jellyfin_down3" value="22018"/>
+      <param name="jellyfin_down4" value="22019"/>
+      <param name="jellyfin_down5" value="22013"/>
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_tv_genre_1.xsp"/>
       <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinTVGenre1Label)]"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22016"/>
+      <param name="jellyfin_up1" value="22015"/>
+      <param name="jellyfin_up2" value="22014"/>
+      <param name="jellyfin_up3" value="22012"/>
+      <param name="jellyfin_up4" value="22011"/>
+      <param name="jellyfin_down1" value="22017"/>
+      <param name="jellyfin_down2" value="22018"/>
+      <param name="jellyfin_down3" value="22019"/>
+      <param name="jellyfin_down4" value="22013"/>
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_tv_genre_2.xsp"/>
       <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinTVGenre2Label)]"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22017"/>
+      <param name="jellyfin_up1" value="22016"/>
+      <param name="jellyfin_up2" value="22015"/>
+      <param name="jellyfin_up3" value="22014"/>
+      <param name="jellyfin_up4" value="22012"/>
+      <param name="jellyfin_up5" value="22011"/>
+      <param name="jellyfin_down1" value="22018"/>
+      <param name="jellyfin_down2" value="22019"/>
+      <param name="jellyfin_down3" value="22013"/>
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_tv_genre_3.xsp"/>
       <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinTVGenre3Label)]"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22018"/>
+      <param name="jellyfin_up1" value="22017"/>
+      <param name="jellyfin_up2" value="22016"/>
+      <param name="jellyfin_up3" value="22015"/>
+      <param name="jellyfin_up4" value="22014"/>
+      <param name="jellyfin_up5" value="22012"/>
+      <param name="jellyfin_up6" value="22011"/>
+      <param name="jellyfin_down1" value="22019"/>
+      <param name="jellyfin_down2" value="22013"/>
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_tv_genre_4.xsp"/>
       <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinTVGenre4Label)]"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22019"/>
+      <param name="jellyfin_up1" value="22018"/>
+      <param name="jellyfin_up2" value="22017"/>
+      <param name="jellyfin_up3" value="22016"/>
+      <param name="jellyfin_up4" value="22015"/>
+      <param name="jellyfin_up5" value="22014"/>
+      <param name="jellyfin_up6" value="22012"/>
+      <param name="jellyfin_down1" value="22013"/>
     </include>
     <include content="WidgetListPoster">
       <param name="content_path" value="videodb://tvshows/titles/"/>
       <param name="widget_header" value="Browse TV Shows"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22013"/>
+      <param name="jellyfin_up1" value="22019"/>
+      <param name="jellyfin_up2" value="22018"/>
+      <param name="jellyfin_up3" value="22017"/>
+      <param name="jellyfin_up4" value="22016"/>
+      <param name="jellyfin_up5" value="22015"/>
+      <param name="jellyfin_up6" value="22014"/>
+      <param name="jellyfin_down1" value="22013"/>
     </include>
   </include>
 </includes>
