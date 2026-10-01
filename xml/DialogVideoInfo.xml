@@ -248,7 +248,7 @@
               <width min="120" max="390">auto</width>
               <font>font23</font>
               <textcolor>grey</textcolor>
-              <label>$INFO[ListItem.Genre]</label>
+              <label>$VAR[GenreVar]</label>
               <scroll>true</scroll>
               <visible>!String.IsEmpty(ListItem.Genre)</visible>
             </control>
