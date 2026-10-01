@@ -150,10 +150,10 @@ jobs:
           tree = ET.parse(addon)
           root = tree.getroot()
           version = root.attrib["version"]
-          # .1 was the static-preset patch already installed on the SmartBox.
-          # Use .2 so Kodi upgrades the helper and receives recommendations.
+          # .1 was the static-preset patch; .2 introduced movie recommendations.
+          # Use .3 so existing recommendation builds upgrade to TV support too.
           if version.count(".") == 2:
-              root.attrib["version"] = version + ".2"
+              root.attrib["version"] = version + ".3"
           tree.write(addon, encoding="UTF-8", xml_declaration=True)
           PY
 
