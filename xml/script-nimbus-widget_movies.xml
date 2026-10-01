@@ -14,6 +14,42 @@
       <param name="list_id" value="19012"/>
     </include>
     <include content="WidgetListPoster">
+      <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_because.xsp"/>
+      <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinBecauseYouWatchedLabel)]"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="19014"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_for_you.xsp"/>
+      <param name="widget_header" value="You Might Like"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="19015"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://skin/playlists/genre_scifi.xsp"/>
+      <param name="widget_header" value="Sci-Fi"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="19016"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://skin/playlists/genre_action_adventure.xsp"/>
+      <param name="widget_header" value="Action &amp; Adventure"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="19017"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://skin/playlists/genre_comedy.xsp"/>
+      <param name="widget_header" value="Comedy"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="19018"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://skin/playlists/genre_family.xsp"/>
+      <param name="widget_header" value="Family"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="19019"/>
+    </include>
+    <include content="WidgetListPoster">
       <param name="content_path" value="videodb://movies/titles/"/>
       <param name="widget_header" value="Browse Movies"/>
       <param name="widget_target" value="videos"/>
