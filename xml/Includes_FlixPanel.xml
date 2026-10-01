@@ -28,7 +28,7 @@
 					<height>223</height>
 					<texture colordiffuse="artwork_dim" background="true">$VAR[ClearlogoVar]</texture>
 					<aspectratio align="center">keep</aspectratio>
-					<visible>Skin.HasSetting(Enable.Clearlogo)</visible>
+					<visible>!Skin.HasSetting(JellyfinMinimalHome) + Skin.HasSetting(Enable.Clearlogo)</visible>
 				</control>
 				<control type="group">
 					<height>263</height>
