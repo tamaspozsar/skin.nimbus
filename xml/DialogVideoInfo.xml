@@ -52,6 +52,15 @@
         <texture background="true" colordiffuse="FF333333">$INFO[ListItem.Art(fanart)]</texture>
         <visible>!Skin.HasSetting(Enable.BackgroundBlur)</visible>
       </control>
+      <control type="image">
+        <left>-40</left>
+        <top>-40</top>
+        <width>1120</width>
+        <height>1160</height>
+        <texture colordiffuse="jellyfin_panel">lists/contentpanel-fade.png</texture>
+        <bordersize>20</bordersize>
+        <visible>Skin.HasSetting(JellyfinMinimalHome)</visible>
+      </control>
       <!-- <control type="image">
         <texture colordiffuse="green">lists/contentpanel-fade.png</texture>
         <bordertexture border="21" infill="false">overlays/shadow.png</bordertexture>
@@ -118,7 +127,7 @@
           <visible>!String.IsEqual(Container(20000).ListItem.Property(id),cast)</visible>
         </control>
         <control type="group">
-          <visible>String.IsEmpty(Container(20000).ListItem.Property(id))</visible>
+          <visible>!Skin.HasSetting(JellyfinMinimalHome) + String.IsEmpty(Container(20000).ListItem.Property(id))</visible>
           <animation effect="fade" start="0" end="100" time="300" delay="300">Visible</animation>
           <animation effect="fade" start="100" end="0" time="300">Hidden</animation>
           <top>160</top>
@@ -182,6 +191,86 @@
               <label>$INFO[ListItem.Plot]</label>
               <autoscroll delay="10000" time="4700" repeat="10000">Skin.HasSetting(autoscroll)</autoscroll>
             </control>
+          </control>
+        </control>
+        <control type="group">
+          <visible>Skin.HasSetting(JellyfinMinimalHome) + String.IsEmpty(Container(20000).ListItem.Property(id))</visible>
+          <animation effect="fade" start="0" end="100" time="240" delay="120">Visible</animation>
+          <top>170</top>
+          <left>470</left>
+          <width>820</width>
+          <height>720</height>
+          <control type="textbox">
+            <width>790</width>
+            <height>135</height>
+            <font>font52_title</font>
+            <textcolor>unfocused_text</textcolor>
+            <align>left</align>
+            <aligny>bottom</aligny>
+            <label>$VAR[DialogInfoTitle]</label>
+          </control>
+          <control type="grouplist">
+            <top>150</top>
+            <width>790</width>
+            <height>44</height>
+            <orientation>horizontal</orientation>
+            <itemgap>18</itemgap>
+            <aligny>center</aligny>
+            <control type="label">
+              <width min="45" max="100">auto</width>
+              <font>font23_title</font>
+              <textcolor>jellyfin_gold_soft</textcolor>
+              <label>$INFO[ListItem.Year]</label>
+              <visible>!String.IsEmpty(ListItem.Year)</visible>
+            </control>
+            <control type="label">
+              <width min="65" max="150">auto</width>
+              <font>font23</font>
+              <textcolor>unfocused_text</textcolor>
+              <label>$INFO[ListItem.Duration]</label>
+              <visible>!$EXP[isTVShow] + !String.IsEmpty(ListItem.Duration)</visible>
+            </control>
+            <control type="label">
+              <width min="80" max="180">auto</width>
+              <font>font23</font>
+              <textcolor>unfocused_text</textcolor>
+              <label>$INFO[ListItem.Property(TotalSeasons),, seasons]</label>
+              <visible>$EXP[isTVShow] + !String.IsEmpty(ListItem.Property(TotalSeasons))</visible>
+            </control>
+            <control type="label">
+              <width min="60" max="110">auto</width>
+              <font>font23_title</font>
+              <textcolor>jellyfin_cyan</textcolor>
+              <label>$INFO[ListItem.Rating,, ★]</label>
+              <visible>!String.IsEmpty(ListItem.Rating)</visible>
+            </control>
+            <control type="label">
+              <width min="120" max="390">auto</width>
+              <font>font23</font>
+              <textcolor>grey</textcolor>
+              <label>$INFO[ListItem.Genre]</label>
+              <scroll>true</scroll>
+              <visible>!String.IsEmpty(ListItem.Genre)</visible>
+            </control>
+          </control>
+          <control type="textbox">
+            <top>220</top>
+            <width>790</width>
+            <height>260</height>
+            <font>font32</font>
+            <textcolor>lightgrey</textcolor>
+            <align>left</align>
+            <label>$INFO[ListItem.Plot]</label>
+            <autoscroll delay="10000" time="4700" repeat="10000">Skin.HasSetting(autoscroll)</autoscroll>
+          </control>
+          <control type="label">
+            <top>505</top>
+            <width>790</width>
+            <height>38</height>
+            <font>font23</font>
+            <textcolor>grey</textcolor>
+            <label>$INFO[ListItem.TagLine]</label>
+            <visible>!String.IsEmpty(ListItem.TagLine)</visible>
           </control>
         </control>
         <control type="group">
