@@ -9,7 +9,7 @@
     </include>
     <include content="WidgetListLandscape">
       <param name="content_path" value="special://skin/playlists/recent_unwatched_episodes.xsp"/>
-      <param name="widget_header" value="Recently Added"/>
+      <param name="widget_header" value="Recently Added Episodes"/>
       <param name="widget_target" value="videos"/>
       <param name="list_id" value="22012"/>
     </include>
