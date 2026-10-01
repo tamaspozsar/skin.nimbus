@@ -75,6 +75,31 @@
 		</definition>
 	</include>
 
+	<!-- Jellyfin TV preset: explicit row-to-row D-pad navigation. The stock
+	     grouplist boundary handlers bounce through hidden controls, which can
+	     strand focus inside a horizontally scrolling widget after SetFocus()
+	     initializes the home directly on a row. -->
+	<include name="JellyfinWidgetVerticalNavigation">
+		<param name="up1">0</param><param name="up2">0</param><param name="up3">0</param>
+		<param name="up4">0</param><param name="up5">0</param><param name="up6">0</param>
+		<param name="down1">0</param><param name="down2">0</param><param name="down3">0</param>
+		<param name="down4">0</param><param name="down5">0</param><param name="down6">0</param>
+		<definition>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up1]).NumItems,0)">SetFocus($PARAM[up1],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up2]).NumItems,0)">SetFocus($PARAM[up2],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up3]).NumItems,0)">SetFocus($PARAM[up3],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up4]).NumItems,0)">SetFocus($PARAM[up4],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up5]).NumItems,0)">SetFocus($PARAM[up5],0,absolute)</onup>
+			<onup condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[up6]).NumItems,0)">SetFocus($PARAM[up6],0,absolute)</onup>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down1]).NumItems,0)">SetFocus($PARAM[down1],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down2]).NumItems,0)">SetFocus($PARAM[down2],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down3]).NumItems,0)">SetFocus($PARAM[down3],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down4]).NumItems,0)">SetFocus($PARAM[down4],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down5]).NumItems,0)">SetFocus($PARAM[down5],0,absolute)</ondown>
+			<ondown condition="Skin.HasSetting(JellyfinMinimalHome) + Integer.IsGreater(Container($PARAM[down6]).NumItems,0)">SetFocus($PARAM[down6],0,absolute)</ondown>
+		</definition>
+	</include>
+
 	<include name="WidgetListPoster">
 		<param name="onclick_condition">false</param>
 		<definition>
@@ -106,6 +131,14 @@
 				<onright>$PARAM[list_id]</onright>
 				<orientation>horizontal</orientation>
 				<movement>7</movement>
+				<include content="JellyfinWidgetVerticalNavigation">
+					<param name="up1" value="$PARAM[jellyfin_up1]"/><param name="up2" value="$PARAM[jellyfin_up2]"/>
+					<param name="up3" value="$PARAM[jellyfin_up3]"/><param name="up4" value="$PARAM[jellyfin_up4]"/>
+					<param name="up5" value="$PARAM[jellyfin_up5]"/><param name="up6" value="$PARAM[jellyfin_up6]"/>
+					<param name="down1" value="$PARAM[jellyfin_down1]"/><param name="down2" value="$PARAM[jellyfin_down2]"/>
+					<param name="down3" value="$PARAM[jellyfin_down3]"/><param name="down4" value="$PARAM[jellyfin_down4]"/>
+					<param name="down5" value="$PARAM[jellyfin_down5]"/><param name="down6" value="$PARAM[jellyfin_down6]"/>
+				</include>
 				<animation condition="Window.IsVisible(1121) + Container($PARAM[list_id]).IsUpdating" reversible="true" pulse="true">
 					<effect type="fade" start="100" end="80" time="700" tween="sine" easing="inout" />
 					<effect type="fadediffuse" start="FFE9E9E9" end="FF777777" time="700" />
@@ -219,6 +252,14 @@
 				<onright>$PARAM[list_id]</onright>
 				<orientation>horizontal</orientation>
 				<movement>3</movement>
+				<include content="JellyfinWidgetVerticalNavigation">
+					<param name="up1" value="$PARAM[jellyfin_up1]"/><param name="up2" value="$PARAM[jellyfin_up2]"/>
+					<param name="up3" value="$PARAM[jellyfin_up3]"/><param name="up4" value="$PARAM[jellyfin_up4]"/>
+					<param name="up5" value="$PARAM[jellyfin_up5]"/><param name="up6" value="$PARAM[jellyfin_up6]"/>
+					<param name="down1" value="$PARAM[jellyfin_down1]"/><param name="down2" value="$PARAM[jellyfin_down2]"/>
+					<param name="down3" value="$PARAM[jellyfin_down3]"/><param name="down4" value="$PARAM[jellyfin_down4]"/>
+					<param name="down5" value="$PARAM[jellyfin_down5]"/><param name="down6" value="$PARAM[jellyfin_down6]"/>
+				</include>
 				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating</visible>
 				<right>0</right>
 				<height>346</height>
