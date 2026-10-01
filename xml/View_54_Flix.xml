@@ -417,6 +417,9 @@
 				<focusedlayout width="263" condition="Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | [Container.Content(episodes) + !String.StartsWith(Container.PluginCategory,Season)] | [Container.Content(musicvideos) + Skin.HasSetting(show_musicvideoposter)]" infoupdate="30">
 					<control type="group">
 						<depth>DepthContentPopout</depth>
+						<animation type="Conditional" condition="Skin.HasSetting(JellyfinMinimalHome)" reversible="true">
+							<effect type="zoom" start="100" end="102" center="164,313" time="160" tween="sine" easing="out" />
+						</animation>
 						<left>33</left>
 						<top>120</top>
 						<include content="FlixMovieLayout">
