@@ -391,9 +391,9 @@
 					
 					[Container.Content(sets) + [String.IsEqual(Skin.String(Skin.ForcedView.sets),$LOCALIZE[31101]) | String.IsEmpty(Skin.String(Skin.ForcedView.sets))]] | 
 					
-					[Container.Content(movies) + [Skin.HasSetting(JellyfinMinimalHome) | String.IsEqual(Skin.String(Skin.ForcedView.movies),$LOCALIZE[31101]) | String.IsEmpty(Skin.String(Skin.ForcedView.movies))]] | 
+					[Container.Content(movies) + [String.IsEqual(Skin.String(Skin.ForcedView.movies),$LOCALIZE[31101]) | String.IsEmpty(Skin.String(Skin.ForcedView.movies))]] | 
 					
-					[Container.Content(tvshows) + [Skin.HasSetting(JellyfinMinimalHome) | String.IsEqual(Skin.String(Skin.ForcedView.tvshows),$LOCALIZE[31101]) | String.IsEmpty(Skin.String(Skin.ForcedView.tvshows))]] | 
+					[Container.Content(tvshows) + [String.IsEqual(Skin.String(Skin.ForcedView.tvshows),$LOCALIZE[31101]) | String.IsEmpty(Skin.String(Skin.ForcedView.tvshows))]] | 
 					
 					[Container.Content(seasons) + [String.IsEqual(Skin.String(Skin.ForcedView.seasons),$LOCALIZE[31101]) | String.IsEmpty(Skin.String(Skin.ForcedView.seasons))]] | 
 					
