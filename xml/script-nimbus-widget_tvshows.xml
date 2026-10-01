@@ -14,6 +14,42 @@
       <param name="list_id" value="22012"/>
     </include>
     <include content="WidgetListPoster">
+      <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_tv_because.xsp"/>
+      <param name="widget_header" value="$INFO[Window(Home).Property(JellyfinTVBecauseYouWatchedLabel)]"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22014"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://profile/playlists/video/nimbus_jellyfin_tv_for_you.xsp"/>
+      <param name="widget_header" value="You Might Like"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22015"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://skin/playlists/tv_genre_scifi.xsp"/>
+      <param name="widget_header" value="Sci-Fi"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22016"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://skin/playlists/tv_genre_action_adventure.xsp"/>
+      <param name="widget_header" value="Action &amp; Adventure"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22017"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://skin/playlists/tv_genre_comedy.xsp"/>
+      <param name="widget_header" value="Comedy"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22018"/>
+    </include>
+    <include content="WidgetListPoster">
+      <param name="content_path" value="special://skin/playlists/tv_genre_family.xsp"/>
+      <param name="widget_header" value="Family"/>
+      <param name="widget_target" value="videos"/>
+      <param name="list_id" value="22019"/>
+    </include>
+    <include content="WidgetListPoster">
       <param name="content_path" value="videodb://tvshows/titles/"/>
       <param name="widget_header" value="Browse TV Shows"/>
       <param name="widget_target" value="videos"/>
