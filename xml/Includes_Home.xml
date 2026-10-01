@@ -131,10 +131,10 @@
 				</itemlayout>
 				<focusedlayout width="230.5" height="393" infoupdate="30">
 					<control type="group">
-						<depth>DepthContentPopout</depth
+						<depth>DepthContentPopout</depth>
 						<animation type="Conditional" condition="Skin.HasSetting(JellyfinMinimalHome)" reversible="true">
 							<effect type="zoom" start="100" end="102" center="148,165" time="160" tween="sine" easing="out" />
-						</animation>>
+						</animation>
 						<left>33</left>
 						<top>15</top>
 						<include content="FlixWidgetMovieLayout">
@@ -241,10 +241,10 @@
 				</itemlayout>
 				<focusedlayout width="459.5" height="393" infoupdate="30">
 					<control type="group">
-						<depth>DepthContentPopout</depth
+						<depth>DepthContentPopout</depth>
 						<animation type="Conditional" condition="Skin.HasSetting(JellyfinMinimalHome)" reversible="true">
 							<effect type="zoom" start="100" end="102" center="265,165" time="160" tween="sine" easing="out" />
-						</animation>>
+						</animation>
 						<left>35</left>
 						<top>15</top>
 						<include content="FlixScapeWidgetMovieLayout">
