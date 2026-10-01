@@ -6,11 +6,10 @@ native video database.  That makes it possible to build lightweight,
 privacy-preserving recommendations locally without storing Jellyfin
 credentials in the skin/helper.
 
-Two smart playlists are generated under the active Kodi profile:
-- nimbus_jellyfin_because.xsp: titles similar to the most recently watched film
-- nimbus_jellyfin_for_you.xsp: a broader preference profile from recent history
+Four smart playlists are generated under the active Kodi profile: movie and
+TV-show variants of "Because You Watched" and "You Might Like".
 
-The generated playlists contain only unwatched titles already present in Kodi.
+The generated playlists contain only library items already present in Kodi.
 """
 
 import json
@@ -24,6 +23,8 @@ import xbmcvfs
 PLAYLIST_DIR = "special://profile/playlists/video/"
 BECAUSE_PATH = PLAYLIST_DIR + "nimbus_jellyfin_because.xsp"
 FOR_YOU_PATH = PLAYLIST_DIR + "nimbus_jellyfin_for_you.xsp"
+TV_BECAUSE_PATH = PLAYLIST_DIR + "nimbus_jellyfin_tv_because.xsp"
+TV_FOR_YOU_PATH = PLAYLIST_DIR + "nimbus_jellyfin_tv_for_you.xsp"
 
 MAX_LIBRARY_ITEMS = 2000
 MAX_RECOMMENDATIONS = 20
@@ -68,8 +69,8 @@ def _year(movie):
         return 0
 
 
-def _write_title_playlist(path, name, movies):
-    if not movies:
+def _write_path_playlist(path, name, items, playlist_type):
+    if not items:
         if xbmcvfs.exists(path):
             xbmcvfs.delete(path)
         return
@@ -77,15 +78,15 @@ def _write_title_playlist(path, name, movies):
     if not xbmcvfs.exists(PLAYLIST_DIR):
         xbmcvfs.mkdirs(PLAYLIST_DIR)
 
-    root = ET.Element("smartplaylist", {"type": "movies"})
+    root = ET.Element("smartplaylist", {"type": playlist_type})
     ET.SubElement(root, "name").text = name
     ET.SubElement(root, "match").text = "one"
 
     seen = set()
-    for movie in movies:
-        # Kodi's movie path is the identity we can safely address from an XSP
-        # rule.  Title is not unique (remakes/editions can share it).
-        path_value = (movie.get("file") or "").strip()
+    for item in items:
+        # Kodi's media path is the identity we can safely address from an XSP
+        # rule. Titles are not unique (remakes/editions can share them).
+        path_value = (item.get("file") or "").strip()
         if not path_value:
             continue
         key = path_value.casefold()
@@ -120,42 +121,51 @@ class RecommendationEngine:
 
         self._last_refresh = now
         movies = self._movies()
-        if not movies:
-            self._clear()
-            return
 
-        watched = [
-            movie
-            for movie in movies
-            if int(movie.get("playcount") or 0) > 0 and movie.get("lastplayed")
-        ]
-        watched.sort(key=_lastplayed_key, reverse=True)
+        if movies:
+            watched = [
+                movie
+                for movie in movies
+                if int(movie.get("playcount") or 0) > 0 and movie.get("lastplayed")
+            ]
+            watched.sort(key=_lastplayed_key, reverse=True)
 
-        unwatched = [movie for movie in movies if int(movie.get("playcount") or 0) < 1]
+            unwatched = [
+                movie for movie in movies if int(movie.get("playcount") or 0) < 1
+            ]
 
-        if watched:
-            source = watched[0]
-            source_title = (source.get("title") or source.get("label") or "").strip()
-            because = self._because_you_watched(source, unwatched)
-            self.home_window.setProperty(
-                "JellyfinBecauseYouWatchedLabel",
-                "Because You Watched: {}".format(source_title)
-                if source_title
-                else "Because You Watched",
-            )
-            _write_title_playlist(
-                BECAUSE_PATH,
-                "Because You Watched",
-                because,
-            )
+            if watched:
+                source = watched[0]
+                source_title = (source.get("title") or source.get("label") or "").strip()
+                because = self._because_you_watched(source, unwatched)
+                self.home_window.setProperty(
+                    "JellyfinBecauseYouWatchedLabel",
+                    "Because You Watched: {}".format(source_title)
+                    if source_title
+                    else "Because You Watched",
+                )
+                _write_path_playlist(
+                    BECAUSE_PATH,
+                    "Because You Watched",
+                    because,
+                    "movies",
+                )
+            else:
+                self.home_window.setProperty(
+                    "JellyfinBecauseYouWatchedLabel", "Because You Watched"
+                )
+                _write_path_playlist(
+                    BECAUSE_PATH, "Because You Watched", [], "movies"
+                )
+
+            for_you = self._for_you(watched, unwatched)
+            _write_path_playlist(FOR_YOU_PATH, "You Might Like", for_you, "movies")
         else:
-            self.home_window.setProperty(
-                "JellyfinBecauseYouWatchedLabel", "Because You Watched"
-            )
-            _write_title_playlist(BECAUSE_PATH, "Because You Watched", [])
+            self._clear_movies()
 
-        for_you = self._for_you(watched, unwatched)
-        _write_title_playlist(FOR_YOU_PATH, "You Might Like", for_you)
+        # TV recommendations are independent from the movie library. A TV-only
+        # profile must still build its discovery rows.
+        self._refresh_tvshows()
 
     def _movies(self):
         result = _jsonrpc(
@@ -176,6 +186,128 @@ class RecommendationEngine:
             },
         )
         return result.get("movies", []) or []
+
+    def _tvshows(self):
+        result = _jsonrpc(
+            "VideoLibrary.GetTVShows",
+            {
+                "properties": [
+                    "title",
+                    "genre",
+                    "studio",
+                    "playcount",
+                    "lastplayed",
+                    "rating",
+                    "year",
+                    "dateadded",
+                    "file",
+                ],
+                "limits": {"start": 0, "end": MAX_LIBRARY_ITEMS},
+            },
+        )
+        return result.get("tvshows", []) or []
+
+    def _episodes(self):
+        # Episode libraries commonly exceed 2,000 rows. Page through the full
+        # result set so recent watch history cannot be dropped arbitrarily.
+        episodes = []
+        page_size = 1000
+        start = 0
+
+        while True:
+            result = _jsonrpc(
+                "VideoLibrary.GetEpisodes",
+                {
+                    "properties": [
+                        "tvshowid",
+                        "showtitle",
+                        "playcount",
+                        "lastplayed",
+                    ],
+                    "limits": {"start": start, "end": start + page_size},
+                },
+            )
+            batch = result.get("episodes", []) or []
+            episodes.extend(batch)
+
+            limits = result.get("limits", {}) or {}
+            total = int(limits.get("total") or len(episodes))
+            if not batch or len(episodes) >= total:
+                break
+
+            start += len(batch)
+
+        return episodes
+
+    def _refresh_tvshows(self):
+        tvshows = self._tvshows()
+        if not tvshows:
+            self.home_window.setProperty(
+                "JellyfinTVBecauseYouWatchedLabel", "Because You Watched"
+            )
+            _write_path_playlist(TV_BECAUSE_PATH, "Because You Watched", [], "tvshows")
+            _write_path_playlist(TV_FOR_YOU_PATH, "You Might Like", [], "tvshows")
+            return
+
+        by_id = {
+            int(show.get("tvshowid")): show
+            for show in tvshows
+            if show.get("tvshowid") is not None
+        }
+
+        watched_episodes = [
+            episode
+            for episode in self._episodes()
+            if int(episode.get("playcount") or 0) > 0 and episode.get("lastplayed")
+        ]
+        watched_episodes.sort(key=_lastplayed_key, reverse=True)
+
+        watched_show_ids = []
+        seen_ids = set()
+        for episode in watched_episodes:
+            try:
+                tvshow_id = int(episode.get("tvshowid"))
+            except (TypeError, ValueError):
+                continue
+            if tvshow_id in by_id and tvshow_id not in seen_ids:
+                watched_show_ids.append(tvshow_id)
+                seen_ids.add(tvshow_id)
+
+        candidates = [
+            show
+            for show in tvshows
+            if int(show.get("tvshowid") or -1) not in seen_ids
+        ]
+
+        if watched_show_ids:
+            source = by_id[watched_show_ids[0]]
+            source_title = (source.get("title") or source.get("label") or "").strip()
+            because = self._because_you_watched(source, candidates)
+            self.home_window.setProperty(
+                "JellyfinTVBecauseYouWatchedLabel",
+                "Because You Watched: {}".format(source_title)
+                if source_title
+                else "Because You Watched",
+            )
+            _write_path_playlist(
+                TV_BECAUSE_PATH,
+                "Because You Watched",
+                because,
+                "tvshows",
+            )
+        else:
+            self.home_window.setProperty(
+                "JellyfinTVBecauseYouWatchedLabel", "Because You Watched"
+            )
+            _write_path_playlist(TV_BECAUSE_PATH, "Because You Watched", [], "tvshows")
+
+        watched_shows = [
+            by_id[tvshow_id]
+            for tvshow_id in watched_show_ids
+            if tvshow_id in by_id
+        ]
+        for_you = self._for_you(watched_shows, candidates)
+        _write_path_playlist(TV_FOR_YOU_PATH, "You Might Like", for_you, "tvshows")
 
     def _because_you_watched(self, source, candidates):
         source_genres = _norm(source.get("genre"))
@@ -249,10 +381,19 @@ class RecommendationEngine:
         )
         return [movie for _, movie in scored[:MAX_RECOMMENDATIONS]]
 
-    def _clear(self):
+    def _clear_movies(self):
         self.home_window.setProperty(
             "JellyfinBecauseYouWatchedLabel", "Because You Watched"
         )
         for path in (BECAUSE_PATH, FOR_YOU_PATH):
+            if xbmcvfs.exists(path):
+                xbmcvfs.delete(path)
+
+    def _clear(self):
+        self._clear_movies()
+        self.home_window.setProperty(
+            "JellyfinTVBecauseYouWatchedLabel", "Because You Watched"
+        )
+        for path in (TV_BECAUSE_PATH, TV_FOR_YOU_PATH):
             if xbmcvfs.exists(path):
                 xbmcvfs.delete(path)
