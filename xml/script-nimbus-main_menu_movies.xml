@@ -3,6 +3,7 @@
   <include name="MoviesMainMenu">
     <item>
       <label>$LOCALIZE[342]</label>
+      <onclick>SetProperty(JellyfinLibraryTarget,movies,home)</onclick>
       <onclick>ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
       <property name="menu_id">$NUMBER[19012]</property>
       <property name="id">movies</property>
