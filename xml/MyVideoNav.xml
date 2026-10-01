@@ -4,6 +4,12 @@
 	<backgroundcolor>background</backgroundcolor>
 	<views>50,51,52,54,55,56,500,501</views>
 	<menucontrol>9000</menucontrol>
+	<!-- Jellyfin TV preset: enter the native video library in Flix immediately.
+	     Container.Content(...) is not guaranteed to be populated yet during
+	     Window.OnLoad, so waiting for it can leave the default view hidden and
+	     produce an empty screen with only the top bar visible. -->
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome)">Container.SetViewMode(54)</onload>
+	<onload condition="Skin.HasSetting(JellyfinMinimalHome)">SetFocus(54)</onload>
 	<!-- Jellyfin TV preset: seed Flix once per content type.
 	     Separate initialization markers distinguish "never initialized" from an explicit
 	     user reset of Skin.ForcedView.*, so Unlock/Reset remains persistent. -->
