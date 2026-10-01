@@ -19,6 +19,7 @@ on:
       - 'scripts/**'
       - 'themes/**'
       - '.github/workflows/package.yml'
+      - '.github/helper_overrides/**'
 
 permissions:
   contents: read
@@ -101,12 +102,54 @@ jobs:
           text = text.replace(old, new, 1)
           path.write_text(text, encoding="utf-8")
 
+          # Add the local recommendation engine to the packaged Nimbus helper.
+          recommendation_source = Path(".github/helper_overrides/jellyfin_recommendations.py")
+          recommendation_target = Path("helper/resources/lib/modules/jellyfin_recommendations.py")
+          recommendation_target.write_text(
+              recommendation_source.read_text(encoding="utf-8"), encoding="utf-8"
+          )
+
+          service = Path("helper/resources/lib/service.py")
+          service_text = service.read_text(encoding="utf-8")
+
+          import_anchor = "from modules.config import SETTINGS_PATH\n"
+          import_patch = (
+              "from modules.config import SETTINGS_PATH\n"
+              "from modules.jellyfin_recommendations import RecommendationEngine\n"
+          )
+          if import_anchor not in service_text:
+              raise SystemExit("service import patch anchor not found")
+          service_text = service_text.replace(import_anchor, import_patch, 1)
+
+          init_anchor = "        self.ratings_monitor = RatingsMonitor(RatingsDatabase(), self.home_window)\n"
+          init_patch = (
+              "        self.ratings_monitor = RatingsMonitor(RatingsDatabase(), self.home_window)\n"
+              "        self.jellyfin_recommendations = RecommendationEngine(self.home_window)\n"
+              "        self.jellyfin_recommendations.refresh(force=True)\n"
+          )
+          if init_anchor not in service_text:
+              raise SystemExit("service init patch anchor not found")
+          service_text = service_text.replace(init_anchor, init_patch, 1)
+
+          notify_anchor = '        if sender == "xbmc":\n'
+          notify_patch = (
+              '        if method in ("VideoLibrary.OnUpdate", "VideoLibrary.OnScanFinished", "VideoLibrary.OnCleanFinished"):\n'
+              "            self.jellyfin_recommendations.refresh()\n\n"
+              '        if sender == "xbmc":\n'
+          )
+          if notify_anchor not in service_text:
+              raise SystemExit("service notification patch anchor not found")
+          service_text = service_text.replace(notify_anchor, notify_patch, 1)
+          service.write_text(service_text, encoding="utf-8")
+
           addon = Path("helper/addon.xml")
           tree = ET.parse(addon)
           root = tree.getroot()
           version = root.attrib["version"]
-          if not version.endswith(".1"):
-              root.attrib["version"] = version + ".1"
+          # .1 was the static-preset patch already installed on the SmartBox.
+          # Use .2 so Kodi upgrades the helper and receives recommendations.
+          if version.count(".") == 2:
+              root.attrib["version"] = version + ".2"
           tree.write(addon, encoding="UTF-8", xml_declaration=True)
           PY
 
