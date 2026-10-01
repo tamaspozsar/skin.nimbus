@@ -83,15 +83,17 @@ def _write_title_playlist(path, name, movies):
 
     seen = set()
     for movie in movies:
-        title = (movie.get("title") or movie.get("label") or "").strip()
-        if not title:
+        # Kodi's movie path is the identity we can safely address from an XSP
+        # rule.  Title is not unique (remakes/editions can share it).
+        path_value = (movie.get("file") or "").strip()
+        if not path_value:
             continue
-        key = title.casefold()
+        key = path_value.casefold()
         if key in seen:
             continue
         seen.add(key)
-        rule = ET.SubElement(root, "rule", {"field": "title", "operator": "is"})
-        ET.SubElement(rule, "value").text = title
+        rule = ET.SubElement(root, "rule", {"field": "path", "operator": "is"})
+        ET.SubElement(rule, "value").text = path_value
 
     ET.SubElement(root, "limit").text = str(MAX_RECOMMENDATIONS)
     ET.SubElement(root, "order", {"direction": "descending"}).text = "rating"
@@ -168,6 +170,7 @@ class RecommendationEngine:
                     "rating",
                     "year",
                     "dateadded",
+                    "file",
                 ],
                 "limits": {"start": 0, "end": MAX_LIBRARY_ITEMS},
             },
